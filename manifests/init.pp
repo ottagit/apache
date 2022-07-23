@@ -8,7 +8,20 @@ class apache(
   String $install_name,
   String $install_ensure,
   String $service_name,
-  Enum['running', 'stopped'] $srvice_ensure,
-  Boolean $service_enable,_
+  Enum['running', 'stopped'] $service_ensure,
+  Boolean $service_enable,
+  String $config_ensure,
+  String $config_path,
+  String $vhosts_dir,
+  String $vhosts_owner,
+  String $vhosts_group,
 ){
+  contain apache::install
+  contain apache::config
+  contain apache::service
+
+  Class['::apache::install']
+  -> Class['apache::config']
+  ~> Class['apache::service']
+
 }
